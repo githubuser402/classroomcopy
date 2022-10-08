@@ -1,8 +1,8 @@
 from utils.database import db
 from utils.schema import ma 
-from base_model import BaseModel
+from models.base_model import BaseModel
 from sqlalchemy import func
-
+from models.task_model import TaskSchema
 
 class Class(db.Model, BaseModel):
     __tablename__ = "classes"
@@ -16,3 +16,16 @@ class Class(db.Model, BaseModel):
 
     def __repr__(self):
         return f"<{self.id}, {self.name}>"
+
+    
+class ClassSchema(ma.Schema):
+    class Meta:
+        fields = ("id", "name", "public_id", "description", "created", "tasks")
+
+    id = ma.Number(dump_only=True)
+    name = ma.String()
+    public_id = ma.String()
+    description = ma.String()
+    created = ma.DateTime()
+    tasks = ma.Nested(TaskSchema)
+    

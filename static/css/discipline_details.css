@@ -1,0 +1,55 @@
+.wrap-1{
+    padding-top: 30px;
+}
+
+.main-page{
+    min-height: 72vh;
+    /* display: flex; */
+    /* align-items: center; */
+}
+
+.wrapper{
+    display: flex;
+    justify-content: center;
+    padding: 50px 0;
+}
+
+.class-description{
+    width: 85%;
+    height: 170px;
+    border: 1px solid black;
+    box-shadow: 0 0 10 rgba(160, 168, 172, 0.473);
+    border-radius: 8px;
+}
+
+.class-name{
+    font-weight: 600;
+    font-size: 30px;
+    color: #fff;
+}
+
+.tasks-list{
+    margin: 20px 0;
+    height:100vh;
+	display:flex;
+    flex-direction: column;
+  	align-items: center;
+}
+
+.task-item{
+    width: 85%;
+    height: 70px;
+    border: 1px solid black;
+    box-shadow: 0 0 10 rgba(160, 168, 172, 0.473);
+    border-radius: 8px;
+}
+
+.task-2{
+    margin: 20px;
+}
+
+.footer-1{
+    position:relative;
+    bottom:0px;
+    width: 100%
+}
