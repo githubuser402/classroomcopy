@@ -1,4 +1,6 @@
+from site import execusercustomize
 from flask import jsonify
+
 
 INVALID_FIELD_NAME_SENT_422 = {
     "http_code": 422,
@@ -35,6 +37,11 @@ UNAUTHORIZED_403 = {
     "code": "notAuthorized",
     "message": "You are not authorised to execute this."
 }
+CONFLICT_409 = {
+    "http_code": 409,
+    "code": "resourceConflict",
+    "message": "Conflict with the current state of the resource"
+}
 SUCCESS_200 = {
     'http_code': 200,
     'code': 'success'
@@ -49,16 +56,19 @@ SUCCESS_204 = {
 }
 
 
-def response_with(status, value=None):
+def response_with(status, value=None, message=None):
     data = {}
 
     if value != None and not isinstance(value, dict):
         raise Exception(f"dict wasnt provided. Value: {type(value)}")
+    elif value != None:
+        data['data'] = value
 
-    data['data'] = value 
     data['status'] = status['code']
 
-    if status.get("message"):
+    if message != None and isinstance(message, str):
+        data['message'] = message
+    elif status.get("message"):
         data['message'] = status['message']
 
     return jsonify(data), status["http_code"]

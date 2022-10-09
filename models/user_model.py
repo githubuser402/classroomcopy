@@ -24,8 +24,9 @@ class User(db.Model, BaseModel):
     __tablename__ = "users"
 
     id = db.Column(db.Integer(), primary_key=True)
-    username = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(50))
+    username = db.Column(db.String(150), unique=True)
+    password = db.Column(db.String(100))
+    slug = db.Column(db.String(20))
     created = db.Column(db.DateTime(), server_default=func.now())    
     administred_classes = db.relationship("Class", secondary=admin_user_class, backref="admin_users")
     study_classes = db.relationship("Class", secondary=student_class, backref="students")
