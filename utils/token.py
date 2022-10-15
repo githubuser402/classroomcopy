@@ -1,7 +1,11 @@
-from ast import Constant
-from config.constants import Constants
 import datetime
+from random import expovariate
+
 import jwt
+from itsdangerous import URLSafeTimedSerializer
+
+from config.constants import Constants
+
 
 class Token:
     @staticmethod
@@ -20,3 +24,20 @@ class Token:
             return token_data
         except Exception as ex:
             raise ex
+
+
+class VerificationToken:
+    @staticmethod
+    def encode(email):
+        serializer = URLSafeTimedSerializer(Constants.secret_key)
+        return serializer.dumps(email, salt=Constants.security_password_salt)
+
+    @staticmethod
+    def decode(token, expiration=3600):
+        serializer = URLSafeTimedSerializer(Constants.secret_key)
+
+        try:
+            email = serializer.loads(token, salt=Constants.security_password_salt, max_age=expiration)
+        except Exception as ex:
+            return ex
+        return email

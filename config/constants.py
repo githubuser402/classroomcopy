@@ -1,7 +1,7 @@
-from pathlib import Path
-from os import path
-import os
 import datetime
+import os
+from os import path
+from pathlib import Path
 
 
 class Constants:
@@ -26,6 +26,14 @@ class Constants:
             raise Exception("environment variable SECRET_KEY is not provided!")
         
         return os.environ['SECRET_KEY']
+
+    @classmethod
+    @property
+    def security_password_salt(cls):
+        if not os.environ.get("SECURITY_PASSWORD_SALD"):
+            raise Exception("environment variable SECURITY_PASSWORD_SALD is not provided")
+
+        return os.environ["SECURITY_PASSWORD_SALD"]
 
     @classmethod
     @property

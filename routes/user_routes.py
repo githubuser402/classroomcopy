@@ -6,7 +6,7 @@ import utils.response as resp
 from config.constants import Constants
 from models.user_model import User, UserSchema
 from utils.response import response_with
-from utils.token import Token
+from utils.token import Token, VerificationToken
 
 user_routes = Blueprint("user_routes", __name__)
 
@@ -27,9 +27,7 @@ def user_registration():
         user.slug = uuid.uuid4().hex[:20]
         user.save()
 
-        token = Token.encode(slug=user.slug)
-        
-        return response_with(resp.SUCCESS_201, value={"token": token})
+        return response_with(resp.SUCCESS_201, message="User was created successfully.")
 
     except Exception as ex:
         print(ex)
@@ -57,3 +55,8 @@ def user_login():
     token = Token.encode(slug=user.slug)
 
     return response_with(resp.SUCCESS_200, value={"token": token})     
+
+
+@user_routes.route("/<verification_token>/", methods=['GET'])
+def verify_user(verification_token):
+    return ""

@@ -29,6 +29,8 @@ class User(db.Model, BaseModel):
     password = db.Column(db.String(100))
     slug = db.Column(db.String(20))
     created = db.Column(db.DateTime(), server_default=func.now())    
+    verified = db.Column(db.Boolean(), default=False, nullable=False)
+    email = db.Column(db.String(120), nullable=False, unique=True) 
     administred_classes = db.relationship("Class", secondary=admin_user_class, backref="admin_users")
     study_classes = db.relationship("Class", secondary=student_class, backref="students")
 
@@ -36,6 +38,10 @@ class User(db.Model, BaseModel):
     def find_by_username(cls, username):
         return cls.query.filter_by(username=username).first()
 
+    @classmethod
+    def find_by_email(cls, email):
+        return cls.query.filter_by(email=email).first()
+    
     @staticmethod
     def generate_hash(password):
         return sha256.hash(password)
@@ -50,10 +56,12 @@ class User(db.Model, BaseModel):
 
 class UserSchema(ma.Schema):
     class Meta:
-        fileds = ("id", "username", "password", "created", "administred_classes", "study_classes")
+        fileds = ("id", "username", "password", "created", "administred_classes", "study_classes", "email", "verified")
 
     id = ma.Number(dump_only=True)
     username = ma.String()
+    email = ma.String()
+    verified = ma.Boolean(dump_only=True)
     password = ma.String()
     created = ma.DateTime()
     administred_classes = ma.Nested(ClassSchema)  
