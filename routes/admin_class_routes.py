@@ -44,8 +44,26 @@ def create_class(user):
 
 
 @admin_class_routes.route("/<class_public_id>/", methods=["PATCH"])
-def edit_class(class_public_id):
-    return ''
+@token_required
+def edit_class(user, class_public_id):
+    data = request.get_json()
+    class_schema = ClassSchema()
+    
+    try:
+        cleared_data = class_schema.load(data)
+    except:
+        return response_with(resp.INVALID_INPUT_422)
+    
+    class_ = db.session.query(Class).filter(Class.admin_users.any(User.id == user.id)).filter_by(public_id=class_public_id).first()
+
+    if not class_:
+        return response_with(resp.SERVER_ERROR_404, message="Class does not esist")
+    
+    class_.name = cleared_data.get("name", class_.name)
+    class_.description = cleared_data.get("description", class_.description)
+    class_.save()
+
+    return response_with(resp.SUCCESS_200, value=class_schema.dump(class_))
 
 
 @admin_class_routes.route("/<class_public_id>/", methods=["DELETE"])
