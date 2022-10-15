@@ -3,17 +3,17 @@ from os import path
 import os
 import datetime
 
-class TokenLifeTime:
-    __seconds = 0
-    __minutes = 0
-    __hours = 2
-    __days = 0
-
-    def __call__(self):
-        return datetime.timedelta(days=self.__days, hours=self.__hours, minutes=self.__minutes, seconds=self.__seconds)
-
 
 class Constants:
+    class TokenLifeTime:
+        __seconds = 0
+        __minutes = 0
+        __hours = 2
+        __days = 0
+
+        def __call__(self):
+            return datetime.timedelta(days=self.__days, hours=self.__hours, minutes=self.__minutes, seconds=self.__seconds)
+
     __template_folder = path.join(Path(__file__).parent.parent, "templates")
     __staticfiles_folder = path.join(Path(__file__).parent.parent, "static")
     __algorithm = "HS256"

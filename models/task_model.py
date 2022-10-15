@@ -1,7 +1,9 @@
-from utils.database import db
-from utils.schema import ma 
-from models.base_model import BaseModel
 from sqlalchemy import func
+
+from models.base_model import BaseModel
+from utils.database import db
+from utils.schema import ma
+
 
 class Task(db.Model, BaseModel):
     __tablename__ = "tasks"

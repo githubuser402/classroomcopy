@@ -1,6 +1,4 @@
-from site import execusercustomize
 from flask import jsonify
-
 
 INVALID_FIELD_NAME_SENT_422 = {
     "http_code": 422,
@@ -21,6 +19,11 @@ BAD_REQUEST_400 = {
     "http_code": 400,
     "code": "badRequest",
     "message": "Bad request"
+}
+UNAUTHORIZED_401 = {
+    "http_code": 401,
+    "code": "unauthorized",
+    "message": "Token expired"
 }
 SERVER_ERROR_500 = {
     "http_code": 500,
@@ -59,9 +62,9 @@ SUCCESS_204 = {
 def response_with(status, value=None, message=None):
     data = {}
 
-    if value != None and not isinstance(value, dict):
-        raise Exception(f"dict wasnt provided. Value: {type(value)}")
-    elif value != None:
+    # if value != None and not isinstance(value, dict):
+    #     raise Exception(f"dict wasnt provided. Value: {type(value)}")
+    if value != None:
         data['data'] = value
 
     data['status'] = status['code']

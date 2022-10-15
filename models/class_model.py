@@ -1,8 +1,10 @@
-from utils.database import db
-from utils.schema import ma 
-from models.base_model import BaseModel
 from sqlalchemy import func
+
+from models.base_model import BaseModel
 from models.task_model import TaskSchema
+from utils.database import db
+from utils.schema import ma
+
 
 class Class(db.Model, BaseModel):
     __tablename__ = "classes"
@@ -24,7 +26,7 @@ class ClassSchema(ma.Schema):
 
     id = ma.Number(dump_only=True)
     name = ma.String()
-    public_id = ma.String()
+    public_id = ma.String(dump_only=True)
     description = ma.String()
     created = ma.DateTime()
     tasks = ma.Nested(TaskSchema)

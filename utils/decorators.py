@@ -1,24 +1,33 @@
-from flask import request, redirect, url_for
+from functools import wraps
+
+from flask import redirect, request, url_for
+
+import utils.response as resp
 from config.constants import Constants
 from models.user_model import User
-from app import app 
-from functools import wraps
-import jwt
+from utils.response import response_with
+from utils.token import Token
 
 
 def token_required(func):
     wraps(func)
     def wrapper(*args, **kwargs):
-        if not request.headers.has_key("x-access-token"):
-            return redirect(url_for("login"))
+        if not request.headers.get("x-access-token"):
+            return response_with(resp.UNAUTHORIZED_403)
         
         token = request.headers.get("x-access-token")
         
         try:
-            token_data = jwt.decode(token, key=Constants.secret_key, algorithms=[Constants.algorithm,])
-            print(token_data)
+            # token_data = jwt.decode(token, key=Constants.secret_key, algorithms=[Constants.algorithm,])
+            token_data = Token.decode(token)    
         except Exception as ex:
-            return redirect(url_for("login"))
+            return response_with(resp.UNAUTHORIZED_401)
+        
+        user = User.query.filter_by(slug=token_data['slug']).first()
 
-        return func(*args, **kwargs)
+        if not user:
+            return response_with(resp.CONFLICT_409, message="user was deleted")
+        
+        return func(user, *args, **kwargs)
+    wrapper.__name__ = func.__name__
     return wrapper

@@ -1,9 +1,10 @@
-from utils.database import db
-from models.base_model import BaseModel
-from utils.schema import ma 
-from sqlalchemy import func
-from models.class_model import ClassSchema
 from passlib.hash import pbkdf2_sha256 as sha256
+from sqlalchemy import func
+
+from models.base_model import BaseModel
+from models.class_model import ClassSchema
+from utils.database import db
+from utils.schema import ma
 
 admin_user_class = db.Table(
     "admin_user_classes",

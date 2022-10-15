@@ -1,16 +1,16 @@
+import uuid
+
 from flask import Blueprint, request
-from utils.response import response_with
+
 import utils.response as resp
 from config.constants import Constants
 from models.user_model import User, UserSchema
-import datetime
-import jwt
-import uuid
-
+from utils.response import response_with
+from utils.token import Token
 
 user_routes = Blueprint("user_routes", __name__)
 
-@user_routes.route("/register", methods=['POST'])
+@user_routes.route("/register/", methods=['POST'])
 def user_registration():
     data = request.get_json()
     user_schema = UserSchema()
@@ -24,14 +24,11 @@ def user_registration():
 
     try:
         user = User(**cleared_data)
-        user.slug = uuid.uuid4[:20]
+        user.slug = uuid.uuid4().hex[:20]
         user.save()
 
-        token_data = {"slug": user.slug, "exp": datetime.datetime.now() + Constants.token_life_time}
-        token = jwt.encode(token_data, Constants.secret_key, Constants.algorithm)
+        token = Token.encode(slug=user.slug)
         
-        print(token)
-
         return response_with(resp.SUCCESS_201, value={"token": token})
 
     except Exception as ex:
@@ -39,7 +36,7 @@ def user_registration():
         return response_with(resp.CONFLICT_409)
 
 
-@user_routes.route("/login", methods=["POST"])
+@user_routes.route("/login/", methods=["POST"])
 def user_login():
     data = request.get_json()
     user_schema = UserSchema()
@@ -57,7 +54,6 @@ def user_login():
     if not User.verify_hash(user.password, cleared_data['password']):
         return response_with(resp.INVALID_INPUT_422, message="password is wrong")
 
-    token_data = {"slug": user.slug , "exp": datetime.datetime.now() + Constants.token_life_time}
-    token = jwt.encode(token_data, Constants.secret_key, Constants.algorithm)
+    token = Token.encode(slug=user.slug)
 
     return response_with(resp.SUCCESS_200, value={"token": token})     
