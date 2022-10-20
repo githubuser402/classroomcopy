@@ -3,7 +3,6 @@ from functools import wraps
 from flask import redirect, request, url_for
 
 import utils.response as resp
-from config.constants import Constants
 from models.user_model import User
 from utils.response import response_with
 from utils.token import Token

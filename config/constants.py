@@ -1,56 +1,41 @@
 import datetime
 import os
+from dataclasses import dataclass
 from os import path
 from pathlib import Path
 
 
+@dataclass
 class Constants:
-    class TokenLifeTime:
+    class _TokenLifeTime:
         __seconds = 0
         __minutes = 0
         __hours = 2
         __days = 0
 
-        def __call__(self):
+        def default_token(self):
             return datetime.timedelta(days=self.__days, hours=self.__hours, minutes=self.__minutes, seconds=self.__seconds)
 
-    __template_folder = path.join(Path(__file__).parent.parent, "templates")
-    __staticfiles_folder = path.join(Path(__file__).parent.parent, "static")
-    __algorithm = "HS256"
-    __token_life_time = TokenLifeTime()
 
-    @classmethod
     @property
-    def secret_key(cls):
+    def SECRET_KEY(self):
         if not os.environ.get("SECRET_KEY"):
             raise Exception("environment variable SECRET_KEY is not provided!")
         
         return os.environ['SECRET_KEY']
 
-    @classmethod
     @property
-    def security_password_salt(cls):
+    def SECURITY_PASSWORD_SALT(self):
         if not os.environ.get("SECURITY_PASSWORD_SALD"):
             raise Exception("environment variable SECURITY_PASSWORD_SALD is not provided")
 
         return os.environ["SECURITY_PASSWORD_SALD"]
 
-    @classmethod
     @property
-    def template_folder(cls):
-        return cls.__template_folder
+    def TOKEN_LIFE_TIME(self):
+       return self._TokenLifeTime().default_token()
 
-    @classmethod
-    @property
-    def staticfiles_folder(cls):
-        return cls.__staticfiles_folder
-
-    @classmethod
-    @property
-    def algorithm(cls):
-        return cls.__algorithm
-
-    @classmethod
-    @property
-    def token_life_time(cls):
-        return cls.__token_life_time()
+    TEMPLATE_FOLDER = path.join(Path(__file__).parent.parent, "templates")
+    STATICFILES_FOLDER = path.join(Path(__file__).parent.parent, "static")
+    ALGORITHM = "HS256"
+    

@@ -1,5 +1,6 @@
 from utils.database import db
 
+
 class BaseModel:
     def save(self):
         db.session.add(self)

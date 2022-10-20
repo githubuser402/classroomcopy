@@ -14,10 +14,12 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(DevelopmentConfigMySQL)
     
-    app.secret_key = Constants.secret_key
-    app.template_folder = Constants.template_folder
+    const = Constants()
+
+    app.secret_key = const.SECRET_KEY
+    app.template_folder = const.TEMPLATE_FOLDER
     app.debug = True
-    app.static_folder = Constants.staticfiles_folder
+    app.static_folder = const.STATICFILES_FOLDER
     
 
     db.init_app(app=app)

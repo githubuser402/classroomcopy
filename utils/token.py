@@ -1,5 +1,5 @@
 import datetime
-from random import expovariate
+from types import ClassMethodDescriptorType
 
 import jwt
 from itsdangerous import URLSafeTimedSerializer
@@ -8,36 +8,38 @@ from config.constants import Constants
 
 
 class Token:
-    @staticmethod
-    def encode(slug):
+    __const = Constants()
+    @classmethod
+    def encode(cls, slug):
         token_data = {
             "slug": slug, 
-            "exp": datetime.datetime.now() + Constants.token_life_time
+            "exp": datetime.datetime.now() + cls.__const.TOKEN_LIFE_TIME 
             }
-        token = jwt.encode(token_data, Constants.secret_key, Constants.algorithm)
+        token = jwt.encode(token_data, cls.__const.SECRET_KEY, cls.__const.ALGORITHM)
         return token
 
-    @staticmethod
-    def decode(token):
+    @classmethod
+    def decode(cls, token):
         try:
-            token_data = jwt.decode(token, Constants.secret_key, algorithms=[Constants.algorithm,])
+            token_data = jwt.decode(token, cls.__const.SECRET_KEY, algorithms=[cls.__const.ALGORITHM,])
             return token_data
         except Exception as ex:
             raise ex
 
 
 class VerificationToken:
-    @staticmethod
-    def encode(email):
-        serializer = URLSafeTimedSerializer(Constants.secret_key)
-        return serializer.dumps(email, salt=Constants.security_password_salt)
+    __const = Constants()
+    @classmethod
+    def encode(cls, email):
+        serializer = URLSafeTimedSerializer(cls.__const.SECRET_KEY)
+        return serializer.dumps(email, salt=cls.__const.SECURITY_PASSWORD_SALT)
 
-    @staticmethod
-    def decode(token, expiration=3600):
-        serializer = URLSafeTimedSerializer(Constants.secret_key)
+    @classmethod
+    def decode(cls, token, expiration=3600):
+        serializer = URLSafeTimedSerializer(cls.__const.SECRET_KEY)
 
         try:
-            email = serializer.loads(token, salt=Constants.security_password_salt, max_age=expiration)
+            email = serializer.loads(token, salt=cls.__const.SECURITY_PASSWORD_SALT, max_age=expiration)
         except Exception as ex:
             return ex
         return email
