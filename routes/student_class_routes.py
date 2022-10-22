@@ -77,4 +77,8 @@ def get_task(user, class_public_id, task_public_id):
     return response_with(resp.SUCCESS_200, value=task_json)
 
 
+@student_class_routes.route("/<class_public_id>/t/<task_public_id>/", methods=['PATCH'])
+@token_required
+def pass_task(user, class_public_id, task_public_id):
+    pass
 

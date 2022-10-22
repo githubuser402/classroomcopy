@@ -84,3 +84,4 @@ def delete_task(class_public_id, task_public_id):
 @admin_class_routes.route("/<class_public_id>/t/<task_public_id>/", methods=['POST'])
 def create_task(class_public_id, task_public_id):
     return ''
+
