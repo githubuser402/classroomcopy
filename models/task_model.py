@@ -13,6 +13,7 @@ class Task(db.Model, BaseModel):
     public_id = db.Column(db.String(10))
     class_id = db.Column(db.Integer(), db.ForeignKey("classes.id"))
     created = db.Column(db.DateTime(), server_default=func.now())
+    hand_in_by = db.Column(db.DateTime())
 
     def __repr__(self):
         return f"<{self.id}, {self.title[:25]}>"
