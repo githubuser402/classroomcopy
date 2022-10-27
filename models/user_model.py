@@ -21,6 +21,16 @@ student_class = db.Table(
 )
 
 
+student_task = db.Table(
+    "student_task",
+    db.Column("id", db.Integer(), primary_key=True),
+    db.Column("student_id", db.Integer(), db.ForeignKey("users.id")),
+    db.Column("task_id", db.Integer(), db.ForeignKey("tasks.id")),
+    db.Column("handed_in", db.Boolean()),
+    db.Column("hand_in_time", db.DateTime())
+)
+
+
 class User(db.Model, BaseModel):
     __tablename__ = "users"
 
@@ -33,6 +43,7 @@ class User(db.Model, BaseModel):
     email = db.Column(db.String(120), nullable=False, unique=True) 
     administred_classes = db.relationship("Class", secondary=admin_user_class, backref="admin_users")
     study_classes = db.relationship("Class", secondary=student_class, backref="students")
+    tasks = db.relationship("Task", secondary=student_task, backref="tasks")
 
     @classmethod
     def find_by_username(cls, username):
