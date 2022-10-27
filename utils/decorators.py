@@ -30,3 +30,11 @@ def token_required(func):
         return func(user, *args, **kwargs)
     wrapper.__name__ = func.__name__
     return wrapper
+
+
+def email_verification_required(func):
+    wraps(func)
+    def wrapper(*args, **kwargs):
+        return func(*args, **kwargs)
+    wrapper.__name__ = func.__name__
+    return wrapper
