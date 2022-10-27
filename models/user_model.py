@@ -20,7 +20,6 @@ student_class = db.Table(
     db.Column("class_id", db.Integer(), db.ForeignKey("classes.id"))
 )
 
-
 student_task = db.Table(
     "student_task",
     db.Column("id", db.Integer(), primary_key=True),
@@ -28,6 +27,20 @@ student_task = db.Table(
     db.Column("task_id", db.Integer(), db.ForeignKey("tasks.id")),
     db.Column("handed_in", db.Boolean()),
     db.Column("hand_in_time", db.DateTime())
+)
+
+student_document = db.Table(
+    "student_documents",
+    db.Column("id", db.Integer(), primary_key=True),
+    db.Column("user_id", db.Integer(), db.ForeignKey("users.id")),
+    db.Column("document_id", db.Integer(), db.ForeignKey("documents.id"))
+)
+
+admin_document = db.Table(
+    "admin_documents",
+    db.Column("id", db.Integer(), primary_key=True),
+    db.Column("user_id", db.Integer(), db.ForeignKey("users.id")),
+    db.Column("document_id", db.Integer(), db.ForeignKey("documents.id"))
 )
 
 
@@ -43,8 +56,10 @@ class User(db.Model, BaseModel):
     email = db.Column(db.String(120), nullable=False, unique=True) 
     administred_classes = db.relationship("Class", secondary=admin_user_class, backref="admin_users")
     study_classes = db.relationship("Class", secondary=student_class, backref="students")
-    tasks = db.relationship("Task", secondary=student_task, backref="tasks")
-
+    tasks = db.relationship("Task", secondary=student_task, backref="students")
+    student_documents = db.relationship("Document", secondary=student_document)
+    admin_documents = db.relationship("Document", secondary=admin_document)
+    
     @classmethod
     def find_by_username(cls, username):
         return cls.query.filter_by(username=username).first()

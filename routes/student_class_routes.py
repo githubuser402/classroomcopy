@@ -74,11 +74,19 @@ def get_task(user, class_public_id, task_public_id):
     task_schema = TaskSchema()
     task_json = task_schema.dump(task)
 
-    return response_with(resp.SUCCESS_200, value=task_json)
+    return response_with(resp.SUCCESS_200, value=task_json)   
 
 
 @student_class_routes.route("/<class_public_id>/t/<task_public_id>/", methods=['PATCH'])
 @token_required
-def pass_task(user, class_public_id, task_public_id):
-    pass
+def add_material(user, class_public_id, task_public_id):
+    class_ = Class.query.filter_by(public_id=class_public_id).first()
+    if not class_:
+        return response_with(resp.SERVER_ERROR_404)
+    
+    task = db.session.query(Task).filer_by(class_id=class_public_id).filter(user in class_.students).filter_by(public_id=task_public_id).first()
 
+    if not task:
+        return response_with(resp.SERVER_ERROR_404, message="Task does not exist") 
+
+    

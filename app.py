@@ -5,6 +5,7 @@ from config.database import DevelopmentConfigMySQL
 from models.class_model import Class
 from models.task_model import Task
 from models.user_model import User
+from models.document_model import Document 
 from utils.database import db
 from utils.migrate import migrate
 from utils.schema import ma
