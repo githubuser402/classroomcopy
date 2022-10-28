@@ -14,8 +14,6 @@ student_class_routes = Blueprint("class_routes", __name__)
 @student_class_routes.route("/", methods=["GET"])
 @token_required
 def get_classes_list(user):
-    # u_alias = aliased(User)
-    # classes = db.session.query(Class).join(Class.students.of_type(u_alias)).filter(u_alias.id == user.id).all()
     
     classes = db.session.query(Class).filter(Class.students.any(User.id == user.id)).all()
     

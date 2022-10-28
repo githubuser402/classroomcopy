@@ -12,4 +12,4 @@ class DevelopmentConfig:
 class DevelopmentConfigMySQL:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = f"mysql+mysqldb://{os.environ.get('MYSQL_ADMIN_USERNAME')}:{os.environ.get('MYSQL_ADMIN_PASSWORD')}@localhost/{os.environ.get('MYSQL_DB_NAME')}"
+    SQLALCHEMY_DATABASE_URI = f"""mysql+mysqldb://{os.environ.get('MYSQL_ADMIN_USERNAME')}:{os.environ.get('MYSQL_ADMIN_PASSWORD')}@localhost/{os.environ.get('MYSQL_DB_NAME')}"""
