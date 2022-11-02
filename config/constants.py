@@ -37,5 +37,5 @@ class Constants:
 
     TEMPLATE_FOLDER = path.join(Path(__file__).parent.parent, "templates")
     STATICFILES_FOLDER = path.join(Path(__file__).parent.parent, "static")
+    MEDIAFILES_FOLDER = path.join(Path(__file__).parent.parent, "media")
     ALGORITHM = "HS256"
-    

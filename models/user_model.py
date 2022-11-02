@@ -3,6 +3,7 @@ from sqlalchemy import func
 
 from models.base_model import BaseModel
 from models.class_model import ClassSchema
+from models.task_model import TaskSchema
 from utils.database import db
 from utils.schema import ma
 
@@ -82,7 +83,7 @@ class User(db.Model, BaseModel):
 
 class UserSchema(ma.Schema):
     class Meta:
-        fileds = ("id", "username", "password", "created", "administred_classes", "study_classes", "email", "verified")
+        fileds = ("id", "username", "password", "created", "administred_classes", "study_classes", "email", "verified", "tasks")
 
     id = ma.Number(dump_only=True)
     username = ma.String()
@@ -91,3 +92,4 @@ class UserSchema(ma.Schema):
     password = ma.String()
     created = ma.DateTime()
     administred_classes = ma.Nested(ClassSchema)  
+    tasks = ma.Nested(TaskSchema)
