@@ -31,5 +31,5 @@ class TaskSchema(ma.Schema):
     public_id = ma.String()
     class_id = ma.String()
     created = ma.DateTime()
-    documents = ma.Nested(DocumentSchema)
+    documents = ma.Nested(DocumentSchema, many=True, only=["path",])
     hand_in_by = ma.String()

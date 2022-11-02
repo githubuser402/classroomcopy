@@ -29,5 +29,5 @@ class ClassSchema(ma.Schema):
     public_id = ma.String(dump_only=True)
     description = ma.String()
     created = ma.DateTime()
-    tasks = ma.Nested(TaskSchema)
+    tasks = ma.Nested(TaskSchema, many=True)
     

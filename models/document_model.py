@@ -9,7 +9,7 @@ class Document(db.Model, BaseModel):
     __tablename__ = "documents"
 
     id = db.Column(db.Integer(), primary_key=True)
-    path = db.Column(db.String(80), nullable=False)
+    path = db.Column(db.String(150), nullable=False)
     user_id = db.Column(db.Integer(), db.ForeignKey("users.id"))
     task_id = db.Column(db.Integer(), db.ForeignKey("tasks.id"))
 
